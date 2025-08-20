@@ -1,0 +1,20 @@
+<template>
+    <div class="main" style={mainStyle} if:false={hide}>
+        <div style={style1} class={allClasses1} full-size-button={isLink1} data-link-number="1" onclick={openButtonLink}>
+            <div if:true={collapsable} class="collapse-arrow">
+                <lightning-icon if:true={doCollapse}  icon-name="utility:chevronright" size="x-small" alternative-text="Collapsed" title="Collapsed" onclick={toggleCollapse}></lightning-icon>
+                <lightning-icon if:false={doCollapse} icon-name="utility:chevrondown"  size="x-small" alternative-text="Expanded"  title="Expanded"  onclick={toggleCollapse}></lightning-icon>
+            </div>
+            <div>
+                <h1 class=title if:true={title1}>{title1}</h1>
+                <lightning-formatted-rich-text value={text1} if:false={doCollapse} class="content"></lightning-formatted-rich-text>
+            </div>
+        </div>
+        <div style={style2} class={allClasses2} full-size-button={isLink2} data-link-number="2" onclick={openButtonLink}>
+            <div>
+                <h1 class=title if:true={title2}>{title2}</h1>
+                <lightning-formatted-rich-text value={text2} if:false={doCollapse} class="content"></lightning-formatted-rich-text>
+            </div>
+        </div>
+    </div>
+</template>

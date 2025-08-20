@@ -1,0 +1,12 @@
+<template>
+    <div class="slds-card_boundary">
+        <lightning-card icon-name={iconName}>
+            <h1 slot="title">{title}</h1>
+
+            <div lwc:if={config} class="main">
+                <c-datatable config={config} query-filters={queryFilters}></c-datatable>
+            </div>
+
+        </lightning-card>
+    </div>
+</template>

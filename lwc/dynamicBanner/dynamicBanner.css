@@ -1,0 +1,61 @@
+.main {
+    display: flex;
+    gap: 1em;
+}
+.align-left    {text-align:left;justify-content:left}
+.align-center  {text-align:center;justify-content:center}
+.align-right   {text-align:right;justify-content:right}
+.align-justify {text-align:justify}
+.main > div {
+    /* border-radius: 4px; */
+    padding: 1em;
+}
+.banner {
+    display: flex;
+    position: relative;
+}
+.banner.link {cursor: pointer}
+.banner.link * {pointer-events: none}
+.slds-card.banner {
+    border-width: 0;
+    margin-block-start: 0;
+}
+.banner > div {
+    display: inline-block;
+}
+.collapse-arrow {
+    margin: 0 0.5em 0 -0.5em;
+    /* vertical-align: top; */
+}
+.collapse-arrow lightning-icon {
+    background-color: rgba(255, 255, 255, .3);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 3px;
+    position: relative;
+    z-index: 3;
+}
+h1.title {
+    font-size: larger;
+    font-weight: bolder;
+    text-align: left;
+}
+.align-left h1.title    {text-align:left}
+.align-center h1.title  {text-align:center}
+.align-right h1.title   {text-align:right}
+.align-justify h1.title {text-align:justify}
+.content {
+    margin-top: 1em;
+}
+
+.banner[full-size-button="true"]:hover {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25));
+}
+.banner[full-size-button="true"] > a {
+    height: 100%;
+    width: 100%;
+    margin-top: -1em;
+    position: absolute;
+    z-index: 2;
+}
