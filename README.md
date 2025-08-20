@@ -1,4 +1,4 @@
-# Salesforce-LWC-DynamicBanner
+# DynamicBanner
 Add a highly customizable banner to any record page
 
 **Features**
