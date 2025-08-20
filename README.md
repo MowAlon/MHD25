@@ -1,4 +1,4 @@
-# DynamicBanner
+# Dynamic Banner
 Add a highly customizable banner to any record page
 
 **Features**
