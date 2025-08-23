@@ -1,0 +1,57 @@
+<template>
+    <lightning-card icon-name={iconName}>
+        <h1 slot="title">{title}</h1>
+
+        <div class="main">
+            <div class="header">
+                <p class="description">{description}</p>
+                <template if:true={showButtons}>
+                    <lightning-button-icon icon-name="utility:filterList" variant={filterButtonVariant} onclick={toggleFilters} alternative-text="Show Filters" title="Show Filters"></lightning-button-icon>
+                    <lightning-button-icon icon-name="utility:refresh" onclick={refresh} alternative-text="Refresh" title="Refresh"></lightning-button-icon>
+                </template>
+            </div>
+
+            <div class="filter-container">
+                <div class="filter-groups" if:true={filtersReady}>
+                    <div class="picklists" if:true={picklistDataHasData}>
+                        <template for:each={picklistData} for:item="picklist">
+                            <div class="picklist-container" style={picklistStyle} key={picklist.key}>
+                                <label class="bold-label slds-form-element__label">{picklist.label}</label>
+                                <lightning-combobox label={picklist.label}
+                                                    options={picklist.options}
+                                                    value={picklist.selection}
+                                                    data-field={picklist.field}
+                                                    placeholder={picklist.placeholder}
+                                                    variant="label-hidden"
+                                                    onchange={handlePicklistSelection}>
+                                </lightning-combobox>
+                            </div>
+                        </template>
+                    </div>
+
+                    <div class="input-filters" if:true={inputFilterObjectsHasData}>
+                        <template for:each={inputFilterObjects} for:item="inputDetails">
+                            <div class="input-filter-container" key={inputDetails.key}>
+                                <label class="bold-label slds-form-element__label">{inputDetails.label}</label>
+                                <lightning-input type={inputDetails.type} variant="label-hidden" data-field={inputDetails.field} data-datatype={inputDetails.datatype} data-extreme={inputDetails.extreme} onkeypress={handleKeyPress}></lightning-input>
+                            </div>
+                        </template>
+                        <lightning-button-icon icon-name="utility:search" variant="brand" alternative-text="Search" title="Search" onclick={handleInputFilters}></lightning-button-icon>
+                    </div>
+                </div>
+
+                <div class="base-filters hide" if:true={requiredFiltersHasData}>
+                    <p class="bold-label">Base Filters</p>
+                    <ul>
+                        <template for:each={requiredFilters} for:item="filter">
+                            <li key={filter}>{filter}</li>
+                        </template>
+                    </ul>
+                </div>
+            </div>
+
+            <c-datatable config={config} query-filters={queryFilter} onfield_info_fetched={storeFieldInfo} onrecords_fetched={handleRecords}></c-datatable>
+        </div>
+
+    </lightning-card>
+</template>

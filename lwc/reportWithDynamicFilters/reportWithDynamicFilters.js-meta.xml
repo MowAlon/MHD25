@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>59.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Report with Dynamic Filters</masterLabel>
+    <targets>
+        <target>lightning__HomePage</target>
+        <target>lightning__RecordPage</target>
+        <target>lightning__AppPage</target>
+    </targets>
+
+    <targetConfigs>
+        <targetConfig targets="lightning__HomePage, lightning__RecordPage, lightning__AppPage">
+            <property name="title"                   label="Title"                                          type="String"  required="false"                 description="Title to appear at the top of the component" placeholder="Title" />
+            <property name="iconName"                label="Icon Name"                                      type="String"  required="false"                 description="Exact string to use for icon-name attribute, like 'utility:knowledge_base' (see https://lightningdesignsystem.com/icons)" />
+            <property name="description"             label="Description"                                    type="String"  required="false"                 description="Optional description of the report's purpose - appears below the title." />
+            <property name="objectName"              label="Object API Name"                                type="String"  required="true"                  description="" />
+            <property name="columnsJSON"             label="Columns Data (JSON)"                            type="String"  required="true"                  description='JSON describing the columns - an array of object. Options are defined in custom "datatable" LWC. Example: [{"sortable":true,"api":"Id","label":"Custom Column Header A","linkToRecord":true,"type":"url","typeAttributes":{"label":{"fieldName":"Name"},"target":"_blank"}},{"sortable":true,"api":"Parent_Relationship__r.Grandparent_Relationship__c","label":"Custom Column Header B","linkToRecord":true,"type":"url","typeAttributes":{"label":{"fieldName":"Parent_Relationship__r.Grandparent_Relationship_Field__r.Field_to_Display_as_Link__c"},"target":"_blank"}},{"api":"Field_A__c","label":"Custom Column Header C"},{"api":"Field_B__c"}]' />
+            <property name="filtersCSV"              label="Required Filters (CSV)"                         type="String"  required="false"                 description="Comma-separated list of filter conditions that will always be active." />
+            <property name="defaultSortField"        label="Initial Sort Field"                             type="String"  required="false"                 description="Sets the initial column to sort. Use the full SOQL API Name (like Parent__r.Grandparent__r.Field__c) of the underlying field - meaning, don't use the displayed field if the data is masked by another (like an ID field masked by the Name field and linked to a record)." />
+            <property name="defaultSortOrder"        label="Initial Sort Order"                             type="String"  required="false" datasource="Ascending,Descending" />
+            <property name="picklistInfo"            label="Picklist Filter Details"                        type="String"  required="false"                 description="Enables user-filtering through picklist at the top of the report. All possible options are automatically presented, based on the values across all retrieved records. Be careful only to use fields that make sense and which can be filtered in SOQL. All selected filters are applied together (AND). Provide a comma-separated, alternating list of desired picklist labels and full API Names of the fields to be filtered (include all relationships from the given object in the API Names, like Parent_Relationship__r.Grandparent_Relationship__r.Name)." placeholder="Label 1, Parent__r.Name, Label 2, Field_API_Name__c" />
+            <property name="defaultFilterSelections" label="Default Picklist Selections (CSV, alternating)" type="String"  required="false"                 description="Enables pre-selection of picklist filters. Provide a comma-separated, alternating list of full API Names of the fields to be filtered and the values (SOQL-formatted, no quotes around Strings). For the API Names, include all relationships from the given object, like Parent_Relationship__r.Grandparent_Relationship__r.Name." />
+            <property name="picklistWidth"           label="Picklist Width"                                 type="String"  required="false" default="15em"  description="CSS-style width, like 15em, 150px, or 25%." />
+            <property name="keepAllPicklistOptions"  label="Keep Picklist Options After Filtering?"         type="Boolean" required="false" default="false" description="If enabled, the options in the picklists don't change as filtering is applied - meaning, even though some options may have been filtered out and no longer available in the filtered set of records, you can still select them, yielding zero records - this can provide a less confusing user experience." />
+            <property name="inputFilterInfo"         label="Free input filter fields (CSV)"                 type="String"  required="false"                 description="Comma-separated list of fields from which to build filters for the user to manage, like a text box to look for records matching a certain string. Use API Names for each field. By default, the field's normal label is used, but custom labels are supported by adding '::' and the custom label, like 'Field_With_Default_Label__c, Parent__r.Name::Custom Label'." />
+            <property name="maxRecordCount"          label="Max Records"                                    type="Integer" required="false" default="500"   description="Maximum number of records to pull from the database. Absolute max is 10K, but it's unlikely to work with so many records." />
+            <property name="pageSize"                label="Page Size"                                      type="Integer" required="false" default="100"   description="Number of records per page." />
+            <property name="showButtons"             label="Show Buttons"                                   type="Boolean" required="false" default="true"  description="Displays utility buttons near the top-right." />
+            <property name="hidePagination"          label="No Pagination"                                  type="Boolean" required="false" default="false" description="Hides pagination." />
+        </targetConfig>
+    </targetConfigs>
+
+</LightningComponentBundle>

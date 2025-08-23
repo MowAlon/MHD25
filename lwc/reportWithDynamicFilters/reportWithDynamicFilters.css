@@ -1,0 +1,43 @@
+.main {
+    display: block;
+    padding: 0 1em;
+}
+
+.header {
+    align-items: start;
+    display: flex;
+    gap: 1em;
+    padding: 0 1em;
+}
+.header p.description {flex-grow: 1;}
+
+.filter-container {
+    align-items: end;
+    display: flex;
+    padding: 1em;
+}
+.filter-groups {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 2em;
+}
+.picklists, .input-filters {
+    align-items: end;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+}
+/* .input-filters lightning-button-icon {
+    align-self: end;
+} */
+
+.base-filters .bold-label {margin-bottom: 5px;}
+.base-filters ul {list-style: disc;}
+
+.bold-label {
+    font-size: larger;
+    font-weight: bold;
+}
+
+.hide {display: none;}
