@@ -26,7 +26,7 @@ export default class ReportWithDynamicFilters extends LightningElement {
     queryFilter;
 
     requiredFilters;
-    get requiredFiltersHasData() {return !!this.requiredFilters?.length;}
+    get requiredFiltersHasData() {return !!this.requiredFilters?.filter(element => element).length;}
     picklistFilters = {};
     inputFilterObjects;
     get inputFilterObjectsHasData() {return !!this.inputFilterObjects?.length;}
