@@ -6,7 +6,7 @@
             <div class="header">
                 <p class="description">{description}</p>
                 <template if:true={showButtons}>
-                    <lightning-button-icon icon-name="utility:filterList" variant={filterButtonVariant} onclick={toggleFilters} alternative-text="Show Filters" title="Show Filters"></lightning-button-icon>
+                    <lightning-button-icon icon-name="utility:filterList" onclick={toggleFilters} variant={filterButtonVariant} if:true={requiredFiltersHasData} alternative-text="Show Filters" title="Show Filters"></lightning-button-icon>
                     <lightning-button-icon icon-name="utility:refresh" onclick={refresh} alternative-text="Refresh" title="Refresh"></lightning-button-icon>
                 </template>
             </div>
