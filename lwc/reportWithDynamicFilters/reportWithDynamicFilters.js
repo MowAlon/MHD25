@@ -94,10 +94,10 @@ export default class ReportWithDynamicFilters extends LightningElement {
 
             let filterString;
 
-            if (Object.keys(this.picklistFilters).length || this.inputFilters?.length || this.requiredFilters?.length) {
+            if (Object.keys(this.picklistFilters).length || !!this.inputFilters || this.requiredFiltersHasData) {
                 let allFilters = Object.values(this.picklistFilters);
-                if (this.inputFilters?.length)    {allFilters.push('(' + this.inputFilters.join(' AND ') + ')');}
-                if (this.requiredFilters?.length) {allFilters.push('(' + this.requiredFilters.join(' AND ') + ')');}
+                if (!!this.inputFilters)         {allFilters.push('(' + this.inputFilters.join(' AND ') + ')');}
+                if (this.requiredFiltersHasData) {allFilters.push('(' + this.requiredFilters.join(' AND ') + ')');}
 
                 filterString = allFilters.join(' AND ');
             }
