@@ -1,7 +1,8 @@
-import { LightningElement, api } from 'lwc';
-import { NavigationMixin }       from 'lightning/navigation';
-import getRecords                from '@salesforce/apex/LWC_Utilities.safe_records';
-import { popToast }              from 'c/utilities';
+import { LightningElement, api }    from 'lwc';
+import { registerRefreshContainer } from "lightning/refresh";
+import { NavigationMixin }          from 'lightning/navigation';
+import { popToast }                 from 'c/utilities';
+import getRecords                   from '@salesforce/apex/LWC_Utilities.safe_records_uncached';
 
 export default class DynamicBanner extends NavigationMixin(LightningElement) {
     @api objectApiName;
@@ -43,6 +44,14 @@ export default class DynamicBanner extends NavigationMixin(LightningElement) {
     @api fontSize2;
     @api alignment2;
 
+    translatedTitle1
+    translatedText1
+    translatedBannerLink1
+    translatedTitle2
+    translatedText2
+    translatedBannerLink2
+    translatedVisibilityFilters
+
     @api visibilityFilters;
     @api visibilityLogic;
     visibilityFilterObjects;
@@ -50,9 +59,9 @@ export default class DynamicBanner extends NavigationMixin(LightningElement) {
     fieldData = {};
     recordData;
 
-    get isLink1()           { return !!this.bannerLink1; }
-    get isLink2()           { return !!this.bannerLink2; }
-    get hide()              { return this.isLoading || !this.visible}
+    get isLink1() { return !!this.bannerLink1; }
+    get isLink2() { return !!this.bannerLink2; }
+    get hide()    { return !this.inAppBuilder && (this.isLoading || !this.visible); }
 
     markupL = '{{';
     markupR = '}}';
@@ -64,10 +73,18 @@ export default class DynamicBanner extends NavigationMixin(LightningElement) {
     allClasses2;
     style1;
     style2;
-    visible = !this.visibilityFilters; // If there are Visibility Filters, default visibile to false.
+    visible;
 
-    async connectedCallback() {
+    get inAppBuilder() { return window.location.href.includes('/flexipageEditor/surface.app'); }
+
+    connectedCallback() {
+        registerRefreshContainer(this, this.refreshContainer);
         this.setStyles();
+        this.buildDataObjects();
+    }
+    async buildDataObjects() {
+        console.log('Building Data');
+        this.isLoading = true;
         this.buildVisibilityFilterObjects();
         this.buildFieldData();
 
@@ -208,20 +225,20 @@ export default class DynamicBanner extends NavigationMixin(LightningElement) {
     }
 
     translateText() {
-        this.title1            = this.textWithFieldsReplaced(this.title1,            this.recordData, this.fieldData.titleFields1);
-        this.text1             = this.textWithFieldsReplaced(this.text1,             this.recordData, this.fieldData.textFields1);
-        this.bannerLink1       = this.textWithFieldsReplaced(this.bannerLink1,       this.recordData, this.fieldData.linkFields1);
-        this.title2            = this.textWithFieldsReplaced(this.title2,            this.recordData, this.fieldData.titleFields2);
-        this.text2             = this.textWithFieldsReplaced(this.text2,             this.recordData, this.fieldData.textFields2);
-        this.bannerLink2       = this.textWithFieldsReplaced(this.bannerLink2,       this.recordData, this.fieldData.linkFields2);
-        this.visibilityFilters = this.textWithFieldsReplaced(this.visibilityFilters, this.recordData, this.fieldData.visibilityFields);
+        this.translatedTitle1            = this.textWithFieldsReplaced(this.title1,            this.recordData, this.fieldData.titleFields1);
+        this.translatedText1             = this.textWithFieldsReplaced(this.text1,             this.recordData, this.fieldData.textFields1);
+        this.translatedBannerLink1       = this.textWithFieldsReplaced(this.bannerLink1,       this.recordData, this.fieldData.linkFields1);
+        this.translatedTitle2            = this.textWithFieldsReplaced(this.title2,            this.recordData, this.fieldData.titleFields2);
+        this.translatedText2             = this.textWithFieldsReplaced(this.text2,             this.recordData, this.fieldData.textFields2);
+        this.translatedBannerLink2       = this.textWithFieldsReplaced(this.bannerLink2,       this.recordData, this.fieldData.linkFields2);
+        this.translatedVisibilityFilters = this.textWithFieldsReplaced(this.visibilityFilters, this.recordData, this.fieldData.visibilityFields);
     }
         textWithFieldsReplaced(text, record, fields) {
             fields.forEach(field => {
                 let markedField = this.markupL + field + this.markupR;
                 let fieldValue  = this.objectValueByString(record, this.fieldWithoutCastingObject(field));
 
-                text = text.replaceAll(markedField, fieldValue);
+                text = text.replaceAll(markedField, fieldValue ?? ''); // To avoid "undefined" displaying on the component, convert null/undefined values to empty strings
             });
 
             return text;
@@ -247,7 +264,6 @@ export default class DynamicBanner extends NavigationMixin(LightningElement) {
                 this.visible = eval(logicString);
             }
             else {
-                let result = evaluatedFilters.every(Boolean);
                 this.visible = evaluatedFilters.every(Boolean);
             }
         }
@@ -299,8 +315,8 @@ export default class DynamicBanner extends NavigationMixin(LightningElement) {
     openButtonLink(event) {
         let typeMap = {"Record Page": "standard__recordPage", "Web Page": "standard__webPage"};
         let type    = typeMap[this['linkType' + event.target.dataset.linkNumber]] ?? 'standard__recordPage';
-        let link    = this['bannerLink'       + event.target.dataset.linkNumber];
-        let newTab  = this['linkNewTab' + event.target.dataset.linkNumber];
+        let link    = this['translatedBannerLink'       + event.target.dataset.linkNumber];
+        let newTab  = this['linkNewTab'       + event.target.dataset.linkNumber];
 
         let settings;
         switch(type) {
@@ -316,5 +332,7 @@ export default class DynamicBanner extends NavigationMixin(LightningElement) {
         }
 
     }
+
+    refreshContainer() {this.buildDataObjects();}
 
 }
