@@ -15,7 +15,8 @@
     position: relative;
 }
 .banner.link {cursor: pointer}
-.banner.link *::not(.collapse-arrow lightning-icon) {pointer-events: none}
+.banner.link * {pointer-events: none}
+.banner.link .collapse-arrow lightning-icon {pointer-events: auto}
 .slds-card.banner {
     border-width: 0;
     margin-block-start: 0;

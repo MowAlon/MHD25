@@ -293,12 +293,10 @@ export default class DynamicBanner extends NavigationMixin(LightningElement) {
     }
 
     toggleCollapse() {
-        console.log('toggleCollapse');
         this.collapse = !this.collapse;
     }
 
     openButtonLink(event) {
-        console.log('openButtonLink');
         let linkNumber = event.target?.dataset?.linkNumber;
         let link       = this['bannerLink' + linkNumber];
 
