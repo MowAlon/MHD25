@@ -316,7 +316,7 @@ export default class DynamicBanner extends NavigationMixin(LightningElement) {
 
         if (link) {
             let typeMap = {"Record Page": "standard__recordPage", "Web Page": "standard__webPage"};
-            let type    = typeMap[this['linkType' + linkNumber]] ?? link.includes('://') ? 'standard__webPage' : 'standard__recordPage';
+            let type    = typeMap[this['linkType' + linkNumber]] ?? (link.includes('://') ? 'standard__webPage' : 'standard__recordPage');
             let newTab  = this['linkNewTab' + linkNumber];
 
             let settings;
