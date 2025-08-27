@@ -2,7 +2,7 @@
 
 This is a powerful tool that can help you (and your users who love quick, interactive reporting) find specific records or collections of records based on your specific needs. It's not perfect, but it's pretty awesome.
 
-![screenshot](/README_images/ReportWithDynamicBanners.png)
+![screenshot](/README_images/ReportWithDynamicFilters.png)
 
 <br>
 
@@ -48,13 +48,13 @@ This one's tough. It really had to be JSON. The options available are based on t
         "hideDefaultActions": true,        // true/false: The only default actions on the I've ever seen allow the user to elect to wrap content (default is true)
         "api": "Id",                       // text:       The API Name of the field you want to display
         "label": "Case Number",            // text:       This masks the header - instead of using the standard field label, you can customize it
-        "linkToRecord": true,              // true/false: If 
-        "type": "url",
-        "typeAttributes": {
+        "linkToRecord": true,              // true/false: If the field is a reference field and you want to link to that record, make this true
+        "type": "url",                     // text:       Used in conjunction with linkToRecord option - if you want to link to the record, set this to "url"
+        "typeAttributes": {                // object:     Used in conjunction with the other fields that allow you to display links
             "label": {
-                "fieldName": "CaseNumber"
+                "fieldName": "CaseNumber"  // text:       API Name of the field that should be used to mask the record ID - protip, it can be from a related object
             },
-            "target": "_blank"
+            "target": "_blank"             // text:       Determines if the link opens in the current tab or a new one - use "self" for the current tab and "_blank" for a new tab
         }
     },
     {
@@ -73,12 +73,12 @@ This one's tough. It really had to be JSON. The options available are based on t
     {
         "sortable": true,
         "hideDefaultActions": true,
-        "api": "Participant__c",
+        "api": "ContactId",
         "linkToRecord": true,
         "type": "url",
         "typeAttributes": {
             "label": {
-                "fieldName": "Participant__r.Name"
+                "fieldName": "Contact.Name"
             },
             "target": "_blank"
         }
@@ -86,7 +86,7 @@ This one's tough. It really had to be JSON. The options available are based on t
     {
         "sortable": true,
         "hideDefaultActions": true,
-        "wrapText": false,
+        "wrapText": false,            // true/false: Sets the wrapping value when you want to force it
         "api": "Category__c"
     },
     {
@@ -94,7 +94,7 @@ This one's tough. It really had to be JSON. The options available are based on t
         "hideDefaultActions": true,
         "wrapText": true,
         "api": "Subcategory__c",
-        "initialWidth": 200
+        "initialWidth": 200           // number: manually set the initial pixel width of the column
     },
     {
         "sortable": true,
