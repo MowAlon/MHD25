@@ -4,7 +4,6 @@
             <h1 slot="title">{title}</h1>
 
             <div lwc:if={config} class="main">
-                <!-- <c-report-with-dynamic-filters title={title} icon-name={iconName} object-name={objectName} columns-j-s-o-n={columnsJSON} filters-c-s-v={filters}></c-report-with-dynamic-filters> -->
                 <c-datatable config={config} query-filters={queryFilters}></c-datatable>
             </div>
 
