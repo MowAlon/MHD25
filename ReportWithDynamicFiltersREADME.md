@@ -35,11 +35,13 @@ An optional line of text you can add to instruct users.
 <br><br>
 
 ### <ins>Object API Name</ins>
-This is the API name of the Salesforce Object you want to display. All references to fields in other inputs are from the perspective of this object. For example, if you want to the display Cases with their Case Numbers and related Account names, you would reference the Case Numbers simply by the API Name of the field (CaseNumber) since Case Number is a field on this object. Meanwhile, you would use "Account.Name" (same as a SOQL query), because that is how you find the name of the Account when querying the Case object.
+This is the API name of the Salesforce Object you want to display.
+All references to fields in other inputs are from the perspective of this object. For example, if you want to the display Cases with their Case Numbers and related Account names, you would reference the Case Numbers simply by the API Name of the field (CaseNumber) since Case Number is a field on this object. Meanwhile, you would use "Account.Name" (same as a SOQL query), because that is how you find the name of the Account when querying the Case object.
 <br><br>
 
 ### <ins>Columns Data (JSON)</ins>
-This one's tough. It really had to be JSON. The options available are based on the custom "Datatable" Lighting Web Component included in this package. I'm not going to spell them all out here, but I'll use some example JSON to explain the important stuff.
+This one's tough. It really had to be JSON.
+The options available are based on the custom "Datatable" Lighting Web Component included in this package. I'm not going to spell them all out here, but I'll use some example JSON to explain the important stuff.
 
 ```
 [
@@ -134,14 +136,60 @@ This one's tough. It really had to be JSON. The options available are based on t
 ```
 <br><br>
 
-### <ins>Relationship to Parent Record from Related List Records</ins>
-This is the full SOQL-format relationship to the "parent" record. In our screenshot example, this is "Opportunity.AccountId" which is how you relate the OpportunityLineItem object to the Account object.
-
-Again, normally, the parent record is the record of the current page, but it could be something else if you used the optional input above to change the parent record.
+### <ins>Required Filters (CSV)</ins>
+A comma separated list of filters that will ALWAYS be applied to the query.
+If you have one or more, there will be a button displayed so users can see the filters you applied.
+Write the filters just as you'd write them in a SOQL query. For example, Status = 'Problem' or Related_Object__r.Owner.Name = 'Alon Waisman'.
+When you use multiple filters, they're all applied together, like if you used an "AND" between them all in a query.
 <br><br>
 
-### <ins>Column Info</ins>
-A comma-separated list of the fields to display.
+### <ins>Initial Sort Field</ins>
+Gives you the option to sort the table by a specific column when it first displays.
+If the field you want to sort by is a reference field, like the record's ID field, use that underlying field as the sort field - not the field that is used to Mask the data. It WILL sort by the content you see in the column.
+For example, if I'm linking to the record ID but masking it with the record's Name, I use "Id" as the sort field, but sorting is actually based on the record's Name.
+<br><br>
+
+### <ins>Initial Sort Order</ins>
+Simple: Ascending or Descending
+<br><br>
+
+### <ins>Picklist Filter Details</ins>
+This is what constructs the selectable picklists filters.
+To be clear, the fields used do NOT need to be a picklist fields - picklists will generate from all the values it found in the initial search. So, you COULD put Account Name in here and show a selectable list of all Account Names, though I don't know that it's a great idea when used with a field that is probably unique across all records.
+With this in mind, it's important to mention that not all field types are compatible - you have to be able to filter on it in a SOQL query, so things like Long Text are out.
+
+The format for entering this info is a bit weird (I'll probably change some day). It's a comma-separated list that alternates between the label to be used on the picklist and the API Name of the field where the values will be found.
+
+For example, if you want to have filters for Case Status and the related Contact's Mailing States, you might use "Case Status, Status, State, Contact.MailingState".
+<br><br>
+
+### <ins>Default Picklist Selections (CSV, alternating)</ins>
+Allows you to preset some of the picklist filters.
+Also uses the alternating, comma-separated values. The first value is the API Name of the picklist field from the above setting. The second value is the default you want to use (don't use quotes around a string value).
+
+For example, if you want to default to only showing open Cases in the "Problem" Category, you'd use "Category__c, Problem, IsClosed, false".
+<br><br>
+
+### <ins>Picklist Width</ins>
+Allows you to set the width of the picklists boxes.
+All will be the same size when you use this option.
+Accepts any CSS-style sizing (px, em, vw, etc), so not just pixels, but if you do want pixel width, include the "px".
+<br><br>
+
+### <ins>Keep Picklist Options AFter Filtering?</ins>
+Determines how the list of selections in the picklists behave after filtering has been applied.
+If you check this box, then whatever options were found in the initial search remain in the list even if it means applying one of those filters would result in zero found records.
+If you do not check the box, every time a filter is applied, the list of selectable options is limited to what's available in the current list of found records.
+<br><br>
+
+### <ins>Free input filter fields (CSV)</ins>
+Allows you to provide additional filters that are more freeform.
+It's great if you're displaying something with lots of unique text fields and want the user to be able to type what they want to find the record.
+For Strings, this is a fuzzy search, so it's not case-sensitive, and you can use partial text, like "man" to find "Alon Waisman" in a search of all users.
+It supports Dates and Numbers as well. For these, two filters will be displayed so you can pick the minimum and maximum values.
+
+This is a comma-separated list of the API Names of the field you want. By default, the field's standard label is used, but you can use a custom label by add a double-colon and the custom label you want.
+For example, if you want to be able to search Contact Names and the Accounts' Annual Revenues but you call Contacts "Customers", use "Contact.Name :: Customer, Account.AnnualRevenue".
 
 Fields in this section ARE case-sensitive so be sure you're exact. For example, use "Id" rather than "ID".
 
@@ -149,71 +197,25 @@ Supports related fields using SOQL-format.
 
 The fields are assigned from the perspective of the related records' object. In the screenshot example above, where "OpportunityLineItem" is the object being displayed, this means the "Name" field is an Opportunity Line Item's name. The related Opportunity's name would be "Opportunity.Name". The name of a custom relationship would be something like "Custom_Relationship__r.Name".
 
-Each field has up to three parts, separated by double-colons "::". Extra spacing around the colons and comma-separation is supported.
-
-The simple explanation of these parts is that, in many situations, you just need the first one. If you want to customize the column header, you can by adding the second part. If the field is a reference field (a lookup or master-detail field) and you want it to hyperlink to the related record, you must use all three parts.
-
-Detailed explanation of all three parts:
-1. **SOQL-formatted API name of the field**
-    * Examples: "Id", "Name", "Custom_Field__c", or "Parent__r.Grandparent__r.Interesting_Field_on_Grandparent__c"
-    * If the field is a reference field (a lookup or master-detail), it _can_ automatically link to the referenced record. For example, the classic record name that links to the record. For a reference field to automatically link to the referenced record, you must provide the second and third parts of the column info.
-2. **Custom column header (optional)**
-    * If you only provide the first part, the the field's existing label will be used, but this allows you to customize it.
-    * If it's a reference field and you want to use the field's existing label, indicate this with a double-asterisk "**". If you like the existing label, it's best to choose this option because it means future changes to the label would automatically reflect in this component.
-3. **Id Mask (only used with reference fields)**
-    * Allows you to replace the Id value with something else, like the referenced record's Name. When used, the content will hyperlink to referenced record.
-    * Common example: "Name" when using the record's Id field, so the record's Name is displayed instead of the actual Id value.
-
-**A complex example of Column Info**  
-This is the full column info used in the screenshots above:  
-`Id :: Product :: Product2.Name, OpportunityId :: Opportunity :: Opportunity.Name, Quantity, CreatedDate :: Date Added, UnitPrice, TotalPrice`
-
-For demonstration, focus on the "Product" column, which lists the Product's name and links to the related Product record.
-
-`Id :: Product :: Product2.Name`  
-
-**Part 1, <ins>Id</ins>:**  
-The intent is to link to the Opportunity Line Item records, and that's the base object for the records in the table, so the "Id" field is used.
-
-**Part 2, <ins>Product</ins>**:  
-A custom header. If one wasn't used, the default field label of "Line Item ID" would be used, and the actual Id value would be shown in the table. The intent, however, is to mask the Id with the Product's Name, so "Product" is used, but it could be anything - even emoji 🤌🤖.
-
-**Part 3, <ins>Product2.Name</ins>**:  
-To mask the Id value with the Product's name, "Product2.Name" is used because that's the reference to the Product's Name field from the base object, Opportunity Line Item.
+For Dates and Numbers, whatever standard or custom label is being used will be automatically preceded by "Earliest" & "Latest" for Dates and "Lowest" & "Highest" for Numbers.
 <br><br>
 
-### <ins>Filters (CSV, can use $recordId)</ins>
-Comma-separated list of filter conditions that will always be active.
-
-These should be in SOQL-format - meaning, however you would write them if they were part of a SOQL query, like "Date = THIS_YEAR" or "Name LIKE '%Cool Name%'"
-
-Use '$recordId' to reference the parent record's Id value. Assuming you keep 'Limit results to this record's relations' checked, results are automatically filtered to only include those with a relationship to the parent record.
+### <ins>Max Records</ins>
+Default and max is 10K, but you can apply a tighter limit.
+With 10K records, there's a reasonable chance you'll break it because Lightning Web Components can only handle so much data.
+So, if you're trying to filter an object with absolute heaps of records, you'll have to come up with one or more reasonable Required Filters (setting above). For instance, only showing records created recently.
+Also, a warning will display if the number of found records exceeds the applied limit. This is intended as a warning to users that they are missing some records.
 <br><br>
 
-### <ins>Initial Sort Field</ins>
-The column to be used for initial sorting.
-
-This must be a column that is displayed (for example, you can't sort by LastModifiedDate unless you're showing that field).
-
-If the sorted column is a reference field, sorting is based on the mask, but you still use reference field's API name.  
-In the example screenshot, "Product2Id", is the sort field, but the actual sorting is based on the Product's Name because that's the mask being used for the column.
+### <ins>Max Records</ins>
+The number of records displayed in a single page.
+Pagination is not mandatory, but applying a value to this setting would be dangerous if you're not paginating because you'll only see as the number assigned and have no way to see the rest.
 <br><br>
 
-### <ins>Initial Sort Order</ins>
-Choose from Ascending or Descending.
-<br><br>
-
-### <ins>Page Size</ins>
-Pagination is on by default. This is the number of records displayed per page unless you turn off pagination.
-<br><br>
-
-### <ins>Show Row Numbers</ins>
-Uncheck this if you don't want to display row numbers.
+### <ins>Show Buttons</ins>
+Used to display the action buttons used for displaying the Required Filters and refreshing the search.
+Note that the filter button won't display if there are no Required Filters.
 <br><br>
 
 ### <ins>No Pagination</ins>
-If you really don't expect there to ever be a very large number of records, check this to always show all records and hide the pagination content at the bottom.
-<br><br>
-
-### <ins>Limit results to Parent Record's relations</ins>
-On by default which means results are filtered so only records with a relationship to the parent record are included. In other words, this filter is active: "<relationship field> = $recordId". In rare situations, it may be useful not to include this filter and manually apply something similar.
+Allows you to hide the default pagination.
