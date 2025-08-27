@@ -17,7 +17,6 @@ export default class DeepRelatedList extends LightningElement {
     @api defaultSortField;
     @api defaultSortOrder;
     @api pageSize;
-    @api showRowNumbers = false;
     @api hidePagination = false;
 
     parentRecordId; // The parent record of the Related List - could be the current record ID or some ancestor
@@ -40,23 +39,22 @@ export default class DeepRelatedList extends LightningElement {
 
             this.queryFilters = this.filters();
 
-            this.config = {objectName:       this.objectName,
-                           limit:            500,
-                           cacheable:        true,
-                           defaultSortField: this.defaultSortField,
-                           sortAsc:          this.defaultSortOrder != 'Descending',
-                           hidePagination:   this.hidePagination,
-                           pageSize:         !this.hidePagination ? this.pageSize : 500,
-                           tableConfig:      {hideCheckboxColumn:  true,
-                                              showRowNumberColumn: this.showRowNumbers,
-                                              columns:             this.columnsData(),
-                                              columnWidthsMode:    'auto'}
+            this.config = {objectName: this.objectName,
+                            limit: 500,
+                            cacheable: true,
+                            defaultSortField: this.defaultSortField,
+                            sortAsc: this.defaultSortOrder != 'Descending',
+                            hidePagination: this.hidePagination,
+                            pageSize: !this.hidePagination ? this.pageSize : 500,
+                            tableConfig: {hideCheckboxColumn: true,
+                                        showRowNumberColumn: true,
+                                        columns: this.columnsData(),
+                                        columnWidthsMode: 'auto'}
              };
         }
 
     filters() {
-        let hasExtraFilters = !!(this.filtersCSV?.trim());
-        let filters = hasExtraFilters ? this.filtersCSV.split(',').map(filter => '(' + filter.trim().replaceAll("'$recordId'", `'${this.parentRecordId}'`).replaceAll("$recordId", `'${this.parentRecordId}'`) + ')') : [];
+        let filters = this.filtersCSV?.split(',').map(filter => '(' + filter.trim().replaceAll("'$recordId'", `'${this.parentRecordId}'`).replaceAll("$recordId", `'${this.parentRecordId}'`) + ')') || [];
         if (this.recordPageFilter) {filters.push(`(${this.relationship} = '${this.parentRecordId}')`);}
         let filterString = filters.join(' AND ');
 
@@ -93,5 +91,6 @@ export default class DeepRelatedList extends LightningElement {
 
             return columnData;
         }
+
 
 }
