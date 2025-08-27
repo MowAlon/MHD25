@@ -1,6 +1,8 @@
 # Report with Dynamic Filters
 
-This is a powerful tool that can help you (and your users who love quick, interactive reporting) find specific records or collections of records based on your specific needs. It's not perfect, but it's pretty awesome.
+This is a powerful tool that can help you (and your users who love quick, interactive reporting) find specific records or collections of records based on your specific needs.
+Its power is in how it easily builds interactive filters for the users to click instead of requiring them to build them into a standard Report or List View.
+It's not perfect, but it's pretty awesome.
 
 ![screenshot](/README_images/ReportWithDynamicFilters.png)
 
