@@ -4,11 +4,11 @@ With the exception of the "Why Salesforce" Chrome extension, I built these proje
 
 These are links to dedicated instructions for how to use each of the tools contained in this repo... some with more solid documentation than others.
 
-## [Dynamic Banner](/DynamicBannerREADME.md)
-## [Deep Related List](/DeepRelatedListREADME.md)
-## [Report with Dynamic Filters](/ReportWithDynamicFiltersREADME.md)
-## [BatchIt](/BatchItREADME.md)
+## [Dynamic Banner](/DynamicBannerREADME.md) [LWC]
+## [Deep Related List](/DeepRelatedListREADME.md) [LWC]
+## [Report with Dynamic Filters](/ReportWithDynamicFiltersREADME.md) [LWC]
+## [BatchIt](/BatchItREADME.md) [Apex]
 
 <hr>
 
-## [Why Salesforce (Chrome Web Store link)](https://chromewebstore.google.com/detail/why-salesforce/ghakkjfjpnhpggbkfkeplbefkipfoaod)
+## [Why Salesforce (Link to Chrome Web Store, not instructions)](https://chromewebstore.google.com/detail/why-salesforce/ghakkjfjpnhpggbkfkeplbefkipfoaod) [Chrome Extension]
