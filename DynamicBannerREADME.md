@@ -14,6 +14,7 @@ Add a highly customizable banner to any record page
     - "This is Cool Deal Opportunity, and it's Account is Super Cool Account"
     - Use SOQL formatting for parent relationships, like "Parent_Object__r.Custom_Field__c" to reference a custom field on a custom parent object
     - Supports polymorphic relationships, like Tasks linking to stuff - just add the API name of the polymorphically related SObject in parentheses before the field reference. For example "(Case)What.Parent.Custom_Lookup__r.Owner.Name"
+  - Note: If you're using an old version of this component where field wrapping looks like \~~FieldAPIName~~, installing this updated version will break your existing implementations. You can either update existing implementations to use the new wrapper formater or manually change the code in dynamicBanner.js where markupL and markupR are defined (also change the metadata where the default value of Main Text is set).
 * **Collapsable**: Display a title and hide the rest of the content (and decide if it's collapsed or expanded by default)
 * **Double it**: show two banners, oriented horizontally or vertically, each with their own styling
 
