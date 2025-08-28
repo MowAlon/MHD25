@@ -5,9 +5,9 @@ With the exception of the "Why Salesforce" Chrome extension, I built these proje
 
 ## Package Installation Links
 Note: the package was created in August '25 on a Playground org. I don't expect it to last long.
-### [Sandbox](https://test.salesforce.com/packaging/installPackage.apexp?p0=04taj000000BbYv)
+### [Sandbox](https://test.salesforce.com/packaging/installPackage.apexp?p0=04taj000000BbaX)
 
-### [Production](https://login.salesforce.com/packaging/installPackage.apexp?p0=04taj000000BbYv)
+### [Production](https://login.salesforce.com/packaging/installPackage.apexp?p0=04taj000000BbaX)
 <br><br>
 
 ## Dedication instructions for each of my tools
