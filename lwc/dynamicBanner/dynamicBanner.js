@@ -78,10 +78,40 @@ export default class DynamicBanner extends NavigationMixin(LightningElement) {
     get inAppBuilder() { return window.location.href.includes('/flexipageEditor/surface.app'); }
 
     connectedCallback() {
-        registerRefreshContainer(this, this.refreshContainer);
+        this.registerForRefresh();
         this.setStyles();
         this.buildDataObjects();
     }
+        registerForRefresh() {
+            try   {registerRefreshContainer(this, this.refreshContainer);}
+            catch {registerRefreshContainer(this.template.host, this.refreshContainer.bind(this));}
+        }
+        setStyles() {
+            let mainClasses = 'slds-card banner';
+            this.allClasses1 = mainClasses + (this.classes1 ? ' ' + this.classes1.trim() : '') + (this.bannerLink1 ? ' link ' : '') + ' align-' + this.alignment1;
+            this.allClasses2 = mainClasses + (this.classes2 ? ' ' + this.classes2.trim() : '') + (this.bannerLink2 ? ' link ' : '') + ' align-' + this.alignment2;
+
+            this.mainStyle = 'flex-direction:' + this.direction;
+            this.style1    = this.style(this.title1, this.text1, this.background1, this.bold1, this.border1, this.borderColor1, this.borderWidth1, this.fontColor1, this.fontSize1, this.alignment1);
+            this.style2    = this.style(this.title2, this.text2, this.background2, this.bold2, this.border2, this.borderColor2, this.borderWidth2, this.fontColor2, this.fontSize2, this.alignment2);
+            if (this.style2 == 'display:none') { this.style1 = this.style1.replace('flex-basis:50%', 'flex-basis:100%'); }
+        }
+            style(title, text, background, bold, border, borderColor, borderWidth, fontColor, fontSize, alignment) {
+                if (title || text) {
+                    let styles = ['flex-basis:50%'];
+
+                    if (this.boxShadow) { styles.push('box-shadow:var(--slds-c-card-shadow, var(--sds-c-card-shadow, var(--lwc-cardShadow, 0 2px 2px 0 rgba(0, 0, 0, 0.10))))'); }
+
+                    if (background) { styles.push('background-color:' + background); }
+                    if (bold)       { styles.push('font-weight:bold'); }
+                    if (border)     { styles.push(`border:${borderWidth} solid ${borderColor}`) };
+                    if (fontColor)  { styles.push('color:' + fontColor); }
+                    if (fontSize)   { styles.push('font-size:' + fontSize); }
+                    if (alignment)  { styles.push('text-align:' + alignment); if (alignment != 'justify') {styles.push('justify-content:' + alignment);} }
+
+                    return styles.join(';');
+                } else {return 'display:none';}
+            }
     async buildDataObjects() {
         this.isLoading = true;
         this.buildVisibilityFilterObjects();
@@ -104,33 +134,6 @@ export default class DynamicBanner extends NavigationMixin(LightningElement) {
 
         this.isLoading = false;
     }
-
-    setStyles() {
-        let mainClasses = 'slds-card banner';
-        this.allClasses1 = mainClasses + (this.classes1 ? ' ' + this.classes1.trim() : '') + (this.bannerLink1 ? ' link ' : '') + ' align-' + this.alignment1;
-        this.allClasses2 = mainClasses + (this.classes2 ? ' ' + this.classes2.trim() : '') + (this.bannerLink2 ? ' link ' : '') + ' align-' + this.alignment2;
-
-        this.mainStyle = 'flex-direction:' + this.direction;
-        this.style1    = this.style(this.title1, this.text1, this.background1, this.bold1, this.border1, this.borderColor1, this.borderWidth1, this.fontColor1, this.fontSize1, this.alignment1);
-        this.style2    = this.style(this.title2, this.text2, this.background2, this.bold2, this.border2, this.borderColor2, this.borderWidth2, this.fontColor2, this.fontSize2, this.alignment2);
-        if (this.style2 == 'display:none') { this.style1 = this.style1.replace('flex-basis:50%', 'flex-basis:100%'); }
-    }
-        style(title, text, background, bold, border, borderColor, borderWidth, fontColor, fontSize, alignment) {
-            if (title || text) {
-                let styles = ['flex-basis:50%'];
-
-                if (this.boxShadow) { styles.push('box-shadow:var(--slds-c-card-shadow, var(--sds-c-card-shadow, var(--lwc-cardShadow, 0 2px 2px 0 rgba(0, 0, 0, 0.10))))'); }
-
-                if (background) { styles.push('background-color:' + background); }
-                if (bold)       { styles.push('font-weight:bold'); }
-                if (border)     { styles.push(`border:${borderWidth} solid ${borderColor}`) };
-                if (fontColor)  { styles.push('color:' + fontColor); }
-                if (fontSize)   { styles.push('font-size:' + fontSize); }
-                if (alignment)  { styles.push('text-align:' + alignment); if (alignment != 'justify') {styles.push('justify-content:' + alignment);} }
-
-                return styles.join(';');
-            } else {return 'display:none';}
-        }
 
     buildVisibilityFilterObjects() {
         // Expects filters formatted as a normal expression, like "Field__c = Some long value" or "(Case)What.Related_Object__r.Field__c != null".
