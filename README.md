@@ -4,9 +4,8 @@ With the exception of the "Why Salesforce" Chrome extension, I built these proje
 <br>
 
 ## Package Installation Links
-Note: the package was created in a Playground org in August '25. I don't know if packages die with their orgs... so these links might not last forever.
+Note: the package was created in a Playground org in August '25... so I don't know how long these links will last.
 ### [Sandbox](https://test.salesforce.com/packaging/installPackage.apexp?p0=04taj000000BbaX)
-
 ### [Production](https://login.salesforce.com/packaging/installPackage.apexp?p0=04taj000000BbaX)
 <br><br>
 
@@ -15,7 +14,7 @@ Note: the package was created in a Playground org in August '25. I don't know if
 ### [Deep Related List](/DeepRelatedListREADME.md) [LWC]
 ### [Report with Dynamic Filters](/ReportWithDynamicFiltersREADME.md) [LWC]
 ### [BatchIt](/BatchItREADME.md) [Apex]
-<br>
+<br><br>
 
 ## Chrome Web Store link
 ### [Why Salesforce](https://chromewebstore.google.com/detail/why-salesforce/ghakkjfjpnhpggbkfkeplbefkipfoaod) [Chrome Extension]
